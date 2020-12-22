@@ -28,11 +28,16 @@
     <dimen name="button_paddingTop_Bottom">8dp</dimen>
     <!--END-->
 
-    <!--START-->
     <dimen name="progress_dialog_content_padding">10dp</dimen>
     <dimen name="progress_bar_size">50dp</dimen>
     <dimen name="progress_text_marginStart">16dp</dimen>
     <dimen name="progress_text_size">16sp</dimen>
-    <!--END-->
+
+    <dimen name="forgot_password_title_textSize">18sp</dimen>
+    <dimen name="forgot_password_title_description_textSize">14sp</dimen>
+
+    <string name="title_forgot_password">FORGOT PASSWORD?</string>
+    <string name="forgot_password_title_description">Enter your username and e-mail address we\'ll send you a email to reset your password</string>
+    <string name="btn_lbl_submit">Submit</string>
 
 </resources>
