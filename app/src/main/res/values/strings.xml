@@ -40,6 +40,7 @@
     <string name="err_msg_agree_terms_and_condition">Please agree terms and condition.</string>
     <string name="registery_successfull">Thanks for registering !.</string>
     <string name="please_wait">Please Wait…</string>
+    <string name="email_send_sucess">"Email sent successfully to reset yoour password !</string>
 
     <!--END-->
 </resources>
