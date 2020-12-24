@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowManager
+import android.widget.Toast
 import com.example.bi3echri.R
+import com.example.bi3echri.firestore.FirstoreClass
+import com.example.bi3echri.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
@@ -106,23 +109,34 @@ class RegisterActivity : BaseActivity() {
                 .addOnCompleteListener (
                 {
                     task ->
-                    hideProgressDialog()
                     if(task.isSuccessful)
                     {
                         //register user
                         val firebaseUser:FirebaseUser = task.result!!.user!!
-                        showErrorBar(
-                            "Your are registerd successfully. Your user id is ${firebaseUser.uid}",
-                            false
+                        val user=User(
+                            firebaseUser.uid,
+                            et_first_name.text.toString().trim(){it <=' '},
+                            et_last_name.text.toString().trim(){it <=' '},
+                            et_email.text.toString().trim(){it <=' '}
                         )
-                        FirebaseAuth.getInstance().signOut()
+                        FirstoreClass().registerUser(this@RegisterActivity,user)
+                        //FirebaseAuth.getInstance().signOut()
                         finish()
                     } else {
                         //if is not successfully
+                        hideProgressDialog()
                         showErrorBar(task.exception!!.message.toString(),errorMessage = true)
                     }
                 })
        }
     }
-
+    fun userRegistrationSuccess()
+    {
+        hideProgressDialog()
+        Toast.makeText(
+            this@RegisterActivity,
+                    resources.getString(R.string.register_success),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 }
