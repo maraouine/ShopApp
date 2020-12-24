@@ -5,9 +5,12 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.example.bi3echri.R
+import com.example.bi3echri.firestore.FirstoreClass
+import com.example.bi3echri.models.User
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -33,7 +36,20 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
 
     }
+    fun userLoggedInSucess (user: User)
+    {
+        //hideprogress dialog
+        hideProgressDialog()
+        //print the user details in the log
+        Log.i("First Name :", user.firstname)
+        Log.i("Last Name :", user.lastname)
+        Log.i("Email:", user.email)
 
+        //main screen after log in
+        startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+        finish()
+
+    }
     override fun onClick(view: View?) {
         if (view != null) {
             when (view.id) {
@@ -84,14 +100,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             //Login using Firbase
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener {task ->
-                    //hide the progress Bar
-                    hideProgressDialog()
+
                     if(task.isSuccessful)
                     {
                         //send user to main activity
-                        showErrorBar("You are logged in sucessfully.", false)
+                        FirstoreClass().getUsersDetails(this@LoginActivity)
                     }else
                     {
+                        hideProgressDialog()
                         showErrorBar(task.exception!!.message.toString(),true)
                     }
                 }
