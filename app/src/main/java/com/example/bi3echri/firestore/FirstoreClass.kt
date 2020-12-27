@@ -1,5 +1,7 @@
 package com.example.bi3echri.firestore
 import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import com.example.bi3echri.activities.BaseActivity
 import com.example.bi3echri.activities.LoginActivity
@@ -52,6 +54,17 @@ class FirstoreClass
                 Log.i(activity.javaClass.simpleName,document.toString())
 
                 val user=document.toObject(User::class.java)!!
+
+                val sharedPreferences =
+                    activity.getSharedPreferences(Constants.BI3ECHRI_PREFERENCES,
+                    Context.MODE_PRIVATE)
+
+                 val editor:SharedPreferences.Editor =sharedPreferences.edit()
+                //key : logged in username
+                //value
+                    editor.putString(Constants.LOGGED_IN_USERNAME,
+                    "${user.firstname} ${user.lastname}")
+                editor.apply()
                 //pass the result to the login activity
                 when(activity)
                 {
