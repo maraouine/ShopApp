@@ -46,8 +46,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         Log.i("Email:", user.email)
 
         //main screen after log in
-        startActivity(Intent(this@LoginActivity,MainActivity::class.java))
-        finish()
+
+        if(user.profileCompleted==0)
+        {
+            val intent=Intent(this@LoginActivity,UserProfilActivity::class.java)
+            startActivity(intent)
+        }
+        else
+        {
+            startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+        }
 
     }
     override fun onClick(view: View?) {

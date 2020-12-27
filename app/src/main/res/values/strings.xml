@@ -43,7 +43,10 @@
     <string name="email_send_sucess">"Email sent successfully to reset yoour password !</string>
     <string name="register_success">"You are registered succesfully!</string>
 
-
-
+    <string name="title_complete_profile">COMPLETE PROFILE</string>
+    <string name="et_hint_mobile_number">Mobile Number</string>
+    <string name="rb_lbl_male">MALE</string>
+    <string name="rb_lbl_female">FEMALE</string>
+    <string name="btn_lbl_save">Save</string>
     <!--END-->
 </resources>
