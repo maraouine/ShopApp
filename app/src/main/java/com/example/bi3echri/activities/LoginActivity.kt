@@ -11,6 +11,7 @@ import android.view.WindowManager
 import com.example.bi3echri.R
 import com.example.bi3echri.firestore.FirstoreClass
 import com.example.bi3echri.models.User
+import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -50,6 +51,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         if(user.profileCompleted==0)
         {
             val intent=Intent(this@LoginActivity,UserProfilActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
             startActivity(intent)
         }
         else
