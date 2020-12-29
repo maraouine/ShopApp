@@ -3,8 +3,6 @@ package com.example.bi3echri.activities
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -13,13 +11,12 @@ import androidx.core.content.ContextCompat
 import com.example.bi3echri.R
 import com.example.bi3echri.models.User
 import com.example.bi3echri.utils.Constants
-import kotlinx.android.synthetic.main.activity_register.*
+import com.example.bi3echri.utils.GlideLoader
 import kotlinx.android.synthetic.main.activity_register.et_email
 import kotlinx.android.synthetic.main.activity_register.et_first_name
 import kotlinx.android.synthetic.main.activity_register.et_last_name
 import kotlinx.android.synthetic.main.activity_user_profil.*
 import java.io.IOException
-import java.util.jar.Manifest
 
 class UserProfilActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,8 +99,9 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
                 if(data!=null)
                 {
                     try {
-                        var selectedImageFileUri=data.data!!
-                        iv_user_photo.setImageURI(Uri.parse(selectedImageFileUri.toString()))
+                        val selectedImageFileUri=data.data!!
+                        //iv_user_photo.setImageURI(Uri.parse(selectedImageFileUri.toString()))
+                        GlideLoader(this).loadUserPicture(selectedImageFileUri,iv_user_photo)
                     }catch (e:IOException)
                     {
                         e.printStackTrace()
