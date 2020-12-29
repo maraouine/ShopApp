@@ -50,6 +50,8 @@
     <string name="btn_lbl_save">Save</string>
     <string name="read_storage_permission_denied">"Sorry, you just denied the permission for storage. You can also allow it form settings</string>
     <string name="image_selection_faied">"Sorry, you just denied the permission for storage. You can also allow it form settings</string>
+    <string name="err_msg_enter_mobile_number">"Please enter the mobile number</string>
+
 
 
     <!--END-->

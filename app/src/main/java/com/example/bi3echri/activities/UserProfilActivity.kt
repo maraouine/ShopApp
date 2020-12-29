@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -38,6 +39,7 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
         et_email.setText(userDetails.email)
 
         iv_user_photo.setOnClickListener(this@UserProfilActivity)
+        btn_submit.setOnClickListener(this@UserProfilActivity)
     }
 
     override fun onClick(v: View?) {
@@ -60,6 +62,12 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
                         Constants.READ_STORAGE_PERMISSION_CODE
                     )
 
+                }
+            }
+            R.id.btn_submit -> {
+                if (validateUserProfilDetails())
+                {
+                    showErrorBar("Your details are valid. You can update them",false)
                 }
             }
         }
@@ -111,6 +119,20 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             }
+        }
+    }
+
+    private fun validateUserProfilDetails():Boolean{
+        return when {
+            TextUtils.isEmpty(et_mobile_number.text.toString().trim {it <= ' ' }) -> {
+                showErrorBar(resources.getString(R.string.err_msg_enter_mobile_number),true)
+                false
+        }
+            else-> {
+                true
+            }
+
+
         }
     }
 
