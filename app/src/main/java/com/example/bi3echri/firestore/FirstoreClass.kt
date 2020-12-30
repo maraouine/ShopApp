@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.bi3echri.activities.BaseActivity
 import com.example.bi3echri.activities.LoginActivity
 import com.example.bi3echri.activities.RegisterActivity
+import com.example.bi3echri.activities.UserProfilActivity
 import com.example.bi3echri.models.User
 import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -86,5 +87,34 @@ class FirstoreClass
                     e
                 )
             }
+    }
+    fun updateUserProfilData(activity: Activity, userHashMap:HashMap <String, Any> )
+    {
+        mFirestore.collection(Constants.USERS)
+            .document(getCurrentUserID())
+            .update(userHashMap)
+            .addOnSuccessListener{
+                when (activity) {
+                    is UserProfilActivity ->
+                    {
+                        activity.userProfilUpdateSucess()
+                    }
+                }
+
+            }
+            .addOnFailureListener { e ->
+                when (activity) {
+                    is UserProfilActivity ->
+                    {
+                        activity.hideProgressDialog()
+                    }
+                }
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating the user details",
+                    e
+                )
+            }
+
     }
 }

@@ -5,11 +5,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.bi3echri.R
+import com.example.bi3echri.firestore.FirstoreClass
 import com.example.bi3echri.models.User
 import com.example.bi3echri.utils.Constants
 import com.example.bi3echri.utils.GlideLoader
@@ -20,11 +22,13 @@ import kotlinx.android.synthetic.main.activity_user_profil.*
 import java.io.IOException
 
 class UserProfilActivity : BaseActivity(), View.OnClickListener {
+    //Global user details
+    private lateinit var userDetails: User
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profil)
 
-        var userDetails: User= User()
         if(intent.hasExtra(Constants.EXTRA_USER_DETAILS))
         {
             //GET the user details from intent as a parceble extra
@@ -67,7 +71,24 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_submit -> {
                 if (validateUserProfilDetails())
                 {
-                    showErrorBar("Your details are valid. You can update them",false)
+                    val userHashMap= HashMap<String, Any>()
+                    val mobilenumber=et_mobile_number.text.toString().trim { it <= ' '}
+                    val gender= if(rb_male.isChecked)
+                    {
+                        Constants.MALE
+                    }else
+                        Constants.FEMALE
+                    if(mobilenumber.isNotEmpty())
+                    {
+                        //stored it on the hasmap
+                        userHashMap[Constants.MOBILE]=mobilenumber.toLong()
+                    }
+                    userHashMap[Constants.GENDER]=gender
+
+                    //show the progress dialog "please wait"
+                    showProgressDialog(resources.getString(R.string.please_wait))
+                    FirstoreClass().updateUserProfilData(this,userHashMap)
+
                 }
             }
         }
@@ -75,6 +96,19 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
     }
 
     }
+
+    fun userProfilUpdateSucess()
+    {
+        hideProgressDialog()
+        Toast.makeText(
+            this@UserProfilActivity,
+            resources.getString(R.string.msg_profil_update_success),
+          Toast.LENGTH_SHORT).
+        show()
+        startActivity(Intent(this@UserProfilActivity,MainActivity::class.java))
+        finish()
+    }
+
     fun OnRequestPermissionsResult(
         requestCode:Int,
         permissions:Array<out String>,
