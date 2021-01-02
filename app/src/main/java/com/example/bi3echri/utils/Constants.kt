@@ -2,8 +2,9 @@ package com.example.bi3echri.utils
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.provider.MediaStore
-import com.example.bi3echri.activities.BaseActivity
+import android.webkit.MimeTypeMap
 
 object Constants {
     const val USERS: String ="users"
@@ -18,6 +19,11 @@ object Constants {
 
     const val MOBILE:String="mobile"
     const val GENDER:String="gender"
+    const val IMAGE: String ="image"
+
+
+    const val USER_PROFIL_IMAGE:String="user_profil_image"
+
 
     fun showImageChooser(activity: Activity)
     {
@@ -27,6 +33,12 @@ object Constants {
         )
         //LAUNCH IMMAGE SELCTION
         activity.startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
+    }
+
+    fun getFileExtension(activity: Activity, uri: Uri?):String?
+    {
+        return MimeTypeMap.getSingleton()
+            .getMimeTypeFromExtension(activity.contentResolver.getType(uri!!))
     }
 
 }

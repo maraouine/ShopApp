@@ -3,6 +3,7 @@ package com.example.bi3echri.activities
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -24,6 +25,9 @@ import java.io.IOException
 class UserProfilActivity : BaseActivity(), View.OnClickListener {
     //Global user details
     private lateinit var userDetails: User
+    private var mSelectedImageFileUri: Uri?=null
+    private var mUserProfilImageURL: String=""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,26 +73,16 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.btn_submit -> {
-                if (validateUserProfilDetails())
+              if (validateUserProfilDetails())
                 {
-                    val userHashMap= HashMap<String, Any>()
-                    val mobilenumber=et_mobile_number.text.toString().trim { it <= ' '}
-                    val gender= if(rb_male.isChecked)
-                    {
-                        Constants.MALE
-                    }else
-                        Constants.FEMALE
-                    if(mobilenumber.isNotEmpty())
-                    {
-                        //stored it on the hasmap
-                        userHashMap[Constants.MOBILE]=mobilenumber.toLong()
-                    }
-                    userHashMap[Constants.GENDER]=gender
-
-                    //show the progress dialog "please wait"
                     showProgressDialog(resources.getString(R.string.please_wait))
-                    FirstoreClass().updateUserProfilData(this,userHashMap)
-
+                    if(mSelectedImageFileUri!=null){
+                        FirstoreClass().uploadImageToCouldStorage(this,mSelectedImageFileUri)
+                    }
+                    else
+                    {
+                        updateUserProfilDetails()
+                    }
                 }
             }
         }
@@ -96,7 +90,31 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
     }
 
     }
+    private fun updateUserProfilDetails(){
+        val userHashMap= HashMap<String, Any>()
+        val mobilenumber=et_mobile_number.text.toString().trim { it <= ' '}
+        val gender= if(rb_male.isChecked)
+        {
+            Constants.MALE
+        }else
+            Constants.FEMALE
+        if(mobilenumber.isNotEmpty())
+        {
+            //stored it on the hasmap
+            userHashMap[Constants.MOBILE]=mobilenumber.toLong()
+        }
+        if(mUserProfilImageURL.isNotEmpty())
+        {
+            userHashMap[Constants.IMAGE]=mUserProfilImageURL
+        }
+        userHashMap[Constants.GENDER]=gender
 
+        //show the progress dialog "please wait"
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirstoreClass().updateUserProfilData(this,userHashMap)
+
+
+    }
     fun userProfilUpdateSucess()
     {
         hideProgressDialog()
@@ -141,9 +159,9 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
                 if(data!=null)
                 {
                     try {
-                        val selectedImageFileUri=data.data!!
+                        mSelectedImageFileUri=data.data!!
                         //iv_user_photo.setImageURI(Uri.parse(selectedImageFileUri.toString()))
-                        GlideLoader(this).loadUserPicture(selectedImageFileUri,iv_user_photo)
+                        GlideLoader(this).loadUserPicture(mSelectedImageFileUri!!,iv_user_photo)
                     }catch (e:IOException)
                     {
                         e.printStackTrace()
@@ -168,6 +186,12 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
 
 
         }
+    }
+
+    fun imageUploadSuccess (imageURL : String)
+    {
+        mUserProfilImageURL= imageURL
+        updateUserProfilDetails()
     }
 
 }
