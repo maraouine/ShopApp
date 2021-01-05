@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import com.example.bi3echri.activities.LoginActivity
-import com.example.bi3echri.activities.RegisterActivity
-import com.example.bi3echri.activities.UserProfilActivity
+import com.example.bi3echri.ui.ui.activities.LoginActivity
+import com.example.bi3echri.ui.ui.activities.RegisterActivity
+import com.example.bi3echri.ui.ui.activities.UserProfilActivity
 import com.example.bi3echri.models.User
 import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth

@@ -1,15 +1,11 @@
-package com.example.bi3echri.activities
+package com.example.bi3echri.ui.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.bi3echri.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_register.*
-import android.widget.Toast.makeText as makeText1
-import kotlinx.android.synthetic.main.activity_forgot_password.et_email as et_email1
 
 class ForgotPasswordActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

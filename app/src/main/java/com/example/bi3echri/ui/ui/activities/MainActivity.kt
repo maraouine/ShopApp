@@ -1,4 +1,4 @@
-package com.example.bi3echri.activities
+package com.example.bi3echri.ui.ui.activities
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity

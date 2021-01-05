@@ -1,11 +1,8 @@
-package com.example.bi3echri.activities
+package com.example.bi3echri.ui.ui.activities
 
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.example.bi3echri.R
@@ -15,8 +12,6 @@ import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_login.et_email as et_email1
-import kotlinx.android.synthetic.main.activity_register.et_password as et_password1
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,22 +36,20 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     {
         //hideprogress dialog
         hideProgressDialog()
-        //print the user details in the log
-        Log.i("First Name :", user.firstname)
-        Log.i("Last Name :", user.lastname)
-        Log.i("Email:", user.email)
 
         //main screen after log in
 
         if(user.profileCompleted==0)
         {
-            val intent=Intent(this@LoginActivity,UserProfilActivity::class.java)
+            val intent=Intent(this@LoginActivity,
+                UserProfilActivity::class.java)
             intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
             startActivity(intent)
         }
         else
         {
-            startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity,
+                DashboardActivity::class.java))
         }
 
     }

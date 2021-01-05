@@ -1,4 +1,4 @@
-package com.example.bi3echri.activities
+package com.example.bi3echri.ui.ui.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -108,7 +107,7 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
             userHashMap[Constants.IMAGE]=mUserProfilImageURL
         }
         userHashMap[Constants.GENDER]=gender
-
+        userHashMap[Constants.COMPLETE_PROFIL]=1
         //show the progress dialog "please wait"
         showProgressDialog(resources.getString(R.string.please_wait))
         FirstoreClass().updateUserProfilData(this,userHashMap)
@@ -123,7 +122,8 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
             resources.getString(R.string.msg_profil_update_success),
           Toast.LENGTH_SHORT).
         show()
-        startActivity(Intent(this@UserProfilActivity,MainActivity::class.java))
+        startActivity(Intent(this@UserProfilActivity,
+            MainActivity::class.java))
         finish()
     }
 
