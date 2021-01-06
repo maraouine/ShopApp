@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.bi3echri.R
 
-class HomeFragment : Fragment() {
+class ProductsFragment : Fragment() {
 
     //private lateinit var homeViewModel: HomeViewModel
 
@@ -18,9 +18,9 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         //homeViewModel =ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        val root = inflater.inflate(R.layout.fragment_products, container, false)
         val textView: TextView = root.findViewById(R.id.text_home)
-            textView.text = "this is Home fragment"
+            textView.text = "this is Product fragment"
         return root
     }
 }

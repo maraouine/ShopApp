@@ -11,28 +11,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.ui.activities.SettingsActivity"></activity>
         <activity
-            android:name="com.example.bi3echri.ui.ui.activities.DashboardActivity"
-            android:label="@string/app_name"></activity>
+            android:name=".ui.ui.activities.DashboardActivity"
+            android:label="@string/app_name" />
         <activity
-            android:name="com.example.bi3echri.ui.ui.activities.UserProfilActivity"
+            android:name=".ui.ui.activities.UserProfilActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.example.bi3echri.ui.ui.activities.ForgotPasswordActivity"
+            android:name=".ui.ui.activities.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.example.bi3echri.ui.ui.activities.BaseActivity" />
+        <activity android:name=".ui.ui.activities.BaseActivity" />
         <activity
-            android:name="com.example.bi3echri.ui.ui.activities.RegisterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.example.bi3echri.ui.ui.activities.LoginActivity"
+            android:name=".ui.ui.activities.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.example.bi3echri.ui.ui.activities.SplashActivity"
+            android:name=".ui.ui.activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.ui.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -42,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.bi3echri.ui.ui.activities.MainActivity"
+            android:name=".ui.ui.activities.MainActivity"
             android:screenOrientation="portrait" />
     </application>
 

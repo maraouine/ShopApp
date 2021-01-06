@@ -6,6 +6,7 @@ import com.example.bi3echri.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_register.et_email as et_email1
 
 class ForgotPasswordActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

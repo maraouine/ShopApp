@@ -1,17 +1,22 @@
 package com.example.bi3echri.ui.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.bi3echri.R
+import com.example.bi3echri.ui.ui.activities.SettingsActivity
 
 class DashboardFragment : Fragment() {
 
    // private lateinit var dashboardViewModel: DashboardViewModel
 
+    override  fun onCreate(savedInstanceState:Bundle?)
+    {
+      super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,5 +28,22 @@ class DashboardFragment : Fragment() {
         textView.text = "This is the dashboard fragment"
 
         return root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.dashboard_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id=item.itemId
+        when(id)
+        {
+            R.id.action_settings -> {
+                startActivity(Intent(activity, SettingsActivity::class.java))
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

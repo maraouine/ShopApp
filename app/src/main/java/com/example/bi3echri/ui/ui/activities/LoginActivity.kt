@@ -12,6 +12,8 @@ import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_register.et_email as et_email1
+import kotlinx.android.synthetic.main.activity_register.et_password as et_password1
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
