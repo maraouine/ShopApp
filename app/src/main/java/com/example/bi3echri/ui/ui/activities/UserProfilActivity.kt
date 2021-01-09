@@ -18,7 +18,10 @@ import com.example.bi3echri.utils.GlideLoader
 import kotlinx.android.synthetic.main.activity_register.et_email
 import kotlinx.android.synthetic.main.activity_register.et_first_name
 import kotlinx.android.synthetic.main.activity_register.et_last_name
+import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.activity_user_profil.*
+import kotlinx.android.synthetic.main.activity_user_profil.iv_user_photo
+import kotlinx.android.synthetic.main.activity_user_profil.tv_title
 import java.io.IOException
 
 class UserProfilActivity : BaseActivity(), View.OnClickListener {
@@ -31,6 +34,8 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profil)
+        setupActionBar()
+
 
         if(intent.hasExtra(Constants.EXTRA_USER_DETAILS))
         {
@@ -38,12 +43,37 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
             userDetails=intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
         }
 
-        et_first_name.isEnabled=false
-        et_first_name.setText(userDetails.firstname)
-        et_last_name.isEnabled=false
-        et_last_name.setText(userDetails.lastname)
-        et_email.isEnabled=false
-        et_email.setText(userDetails.email)
+
+
+        if(userDetails.profileCompleted==0)
+        {
+            tv_title.text=resources.getString(R.string.title_complete_profile)
+            et_first_name.isEnabled=false
+            et_first_name.setText(userDetails.firstName)
+            et_last_name.isEnabled=false
+            et_last_name.setText(userDetails.lastName)
+            et_email.isEnabled=false
+            et_email.setText(userDetails.email)
+        } else{
+            setupActionBar()
+            tv_title.text=resources.getString(R.string.title_edit_profile)
+            GlideLoader(this@UserProfilActivity).loadUserPicture(userDetails.image,iv_user_photo)
+            et_first_name.setText(userDetails.firstName)
+            et_last_name.setText(userDetails.lastName)
+            et_email.isEnabled=false
+            et_email.setText(userDetails.email)
+
+            if(userDetails.mobile!=0L)
+            {
+                et_mobile_number.setText(userDetails.mobile.toString())
+            }
+            if(userDetails.gender==Constants.MALE) {
+                rb_male.isChecked=true
+            }else{
+                rb_female.isChecked=true
+            }
+        }
+
 
         iv_user_photo.setOnClickListener(this@UserProfilActivity)
         btn_submit.setOnClickListener(this@UserProfilActivity)
@@ -91,23 +121,44 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
     }
     private fun updateUserProfilDetails(){
         val userHashMap= HashMap<String, Any>()
+
+
+        val firstName=et_first_name.text.toString().trim { it <= ' '}
+        if(firstName != userDetails.firstName)
+        {
+            userHashMap[Constants.FIRSTNAME]=firstName
+        }
+        val lastName=et_last_name.text.toString().trim { it <= ' '}
+        if(lastName != userDetails.lastName)
+        {
+            userHashMap[Constants.LASTNAME]=lastName
+        }
+
+
         val mobilenumber=et_mobile_number.text.toString().trim { it <= ' '}
         val gender= if(rb_male.isChecked)
         {
             Constants.MALE
         }else
             Constants.FEMALE
-        if(mobilenumber.isNotEmpty())
+        if(mobilenumber.isNotEmpty() && mobilenumber !=userDetails.mobile.toString())
         {
             //stored it on the hasmap
             userHashMap[Constants.MOBILE]=mobilenumber.toLong()
+        }
+
+        if(gender.isNotEmpty() && gender !=userDetails.gender)
+        {
+            //stored it on the hasmap
+            userHashMap[Constants.GENDER]=gender
         }
         if(mUserProfilImageURL.isNotEmpty())
         {
             userHashMap[Constants.IMAGE]=mUserProfilImageURL
         }
-        userHashMap[Constants.GENDER]=gender
-        userHashMap[Constants.COMPLETE_PROFIL]=1
+        if (userDetails.profileCompleted == 0) {
+            userHashMap[Constants.COMPLETE_PROFIL] = 1
+        }
         //show the progress dialog "please wait"
         showProgressDialog(resources.getString(R.string.please_wait))
         FirstoreClass().updateUserProfilData(this,userHashMap)
@@ -123,7 +174,7 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
           Toast.LENGTH_SHORT).
         show()
         startActivity(Intent(this@UserProfilActivity,
-            MainActivity::class.java))
+            DashboardActivity::class.java))
         finish()
     }
 
@@ -192,6 +243,17 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
     {
         mUserProfilImageURL= imageURL
         updateUserProfilDetails()
+    }
+    private fun setupActionBar()
+    {
+        setSupportActionBar(toolbar_user_profile_activity)
+        val actionBar = supportActionBar
+        if(actionBar!=null)
+        {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_colar_back_24dp)
+        }
+        toolbar_user_profile_activity.setNavigationOnClickListener {onBackPressed()}
     }
 
 }

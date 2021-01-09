@@ -8,12 +8,14 @@ import com.example.bi3echri.ui.ui.activities.LoginActivity
 import com.example.bi3echri.ui.ui.activities.RegisterActivity
 import com.example.bi3echri.ui.ui.activities.UserProfilActivity
 import com.example.bi3echri.models.User
+import com.example.bi3echri.ui.ui.activities.SettingsActivity
 import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlin.math.log
 
 class FirstoreClass
 {
@@ -39,20 +41,21 @@ class FirstoreClass
     }
     fun getCurrentUserID(): String
     {
-        val currentUser =FirebaseAuth.getInstance().currentUser
+        val currentUser=FirebaseAuth.getInstance().currentUser
+
+        Log.i(javaClass.simpleName,currentUser.toString())
         var currentUserID=""
         if(currentUser!=null)
         {
             currentUserID =currentUser.uid
         }
         return  currentUserID
+
     }
 
     fun getUsersDetails(activity: Activity)
     {
-        mFirestore.collection(Constants.USERS)
-            .document(getCurrentUserID())
-            .get()
+        mFirestore.collection(Constants.USERS).document(getCurrentUserID()).get()
             .addOnSuccessListener { document ->
                 Log.i(activity.javaClass.simpleName,document.toString())
 
@@ -66,13 +69,16 @@ class FirstoreClass
                 //key : logged in username
                 //value
                     editor.putString(Constants.LOGGED_IN_USERNAME,
-                    "${user.firstname} ${user.lastname}")
+                    "${user.firstName} ${user.lastName}")
                 editor.apply()
                 //pass the result to the login activity
                 when(activity)
                 {
                     is LoginActivity -> {
                         activity.userLoggedInSucess(user)
+                    }
+                    is SettingsActivity -> {
+                        activity.userDetailsSuccess(user)
                     }
                 }
             }
@@ -81,6 +87,9 @@ class FirstoreClass
                 when(activity)
                 {
                     is LoginActivity ->   {
+                        activity.hideProgressDialog()
+                    }
+                    is SettingsActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
