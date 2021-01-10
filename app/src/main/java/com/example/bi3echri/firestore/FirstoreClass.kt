@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import com.example.bi3echri.ui.ui.activities.LoginActivity
-import com.example.bi3echri.ui.ui.activities.RegisterActivity
-import com.example.bi3echri.ui.ui.activities.UserProfilActivity
+import com.example.bi3echri.models.Product
 import com.example.bi3echri.models.User
-import com.example.bi3echri.ui.ui.activities.SettingsActivity
+import com.example.bi3echri.ui.ui.activities.*
 import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -128,10 +126,10 @@ class FirstoreClass
             }
 
     }
-    fun uploadImageToCouldStorage(activity: Activity,imageFileURI:Uri?)
+    fun uploadImageToCouldStorage(activity: Activity,imageFileURI:Uri?, imageType:String)
     {
         val sRef: StorageReference=FirebaseStorage.getInstance().reference.child(
-            Constants.USER_PROFIL_IMAGE + System.currentTimeMillis() + "."
+            imageType + System.currentTimeMillis() + "."
         + Constants.getFileExtension(
                 activity,
                 imageFileURI)
@@ -149,6 +147,11 @@ class FirstoreClass
                         is UserProfilActivity -> {
                             activity.imageUploadSuccess(uri.toString())
                         }
+                        is AddProductActivity ->
+                        {
+                            activity.imageUploadSuccess(uri.toString())
+
+                        }
                     }
                 }
         }
@@ -158,11 +161,32 @@ class FirstoreClass
                     is UserProfilActivity -> {
                         activity.hideProgressDialog()
                     }
+                    is AddProductActivity -> {
+                        activity.hideProgressDialog()
+                    }
                 }
                 Log.e(
                     activity.javaClass.simpleName,
                     exception.message,
                     exception
+                )
+            }
+    }
+    fun uploadProductDetails(activity: AddProductActivity,productInfo:Product)
+    {
+        mFirestore.collection(Constants.PRODUCTS)
+            .document()
+            .set(productInfo, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.productUploadSuccess()
+            }
+            .addOnFailureListener{
+                e->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while uploading the product details",
+                    e
                 )
             }
     }

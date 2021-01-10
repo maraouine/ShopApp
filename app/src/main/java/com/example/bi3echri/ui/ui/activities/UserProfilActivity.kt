@@ -106,7 +106,7 @@ class UserProfilActivity : BaseActivity(), View.OnClickListener {
                 {
                     showProgressDialog(resources.getString(R.string.please_wait))
                     if(mSelectedImageFileUri!=null){
-                        FirstoreClass().uploadImageToCouldStorage(this,mSelectedImageFileUri)
+                        FirstoreClass().uploadImageToCouldStorage(this,mSelectedImageFileUri,Constants.USER_PROFIL_IMAGE)
                     }
                     else
                     {
