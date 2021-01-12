@@ -229,7 +229,26 @@ class FirstoreClass
                 Log.e("Get Product List", "Error while getting product list.", e)
             }
     }
+    fun getProductDetails(activity: ProductDetailsActivity, productID : String)
+    {
+        mFirestore.collection(Constants.PRODUCTS)
+            .document(productID)
+            .get()
+            .addOnSuccessListener {
+                document ->
+                Log.e(activity.javaClass.simpleName,document.toString())
+                val product= document.toObject(Product::class.java)
+                if (product != null) {
+                    activity.productDetailsSuccess(product)
+                }
 
+            }
+            .addOnFailureListener {
+                e->
+              activity.hideProgressDialog()
+              Log.e(activity.javaClass.simpleName,"Error while getting the product details.",e)
+            }
+    }
     fun deleteProduct(fragment : ProductsFragment, productId:String)
     {
         mFirestore.collection(Constants.PRODUCTS)

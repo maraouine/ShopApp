@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bi3echri.R
 import com.example.bi3echri.firestore.FirstoreClass
 import com.example.bi3echri.models.Product
+import com.example.bi3echri.ui.ui.activities.ProductDetailsActivity
 import com.example.bi3echri.ui.ui.activities.SettingsActivity
 import com.example.bi3echri.ui.ui.adapters.DashboardItemsListAdapter
 import com.example.bi3echri.ui.ui.adapters.MyProductsListAdapter
+import com.example.bi3echri.utils.Constants
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.fragment_products.*
 
@@ -53,6 +55,15 @@ class DashboardFragment : BaseFragment() {
 
             val adapter= DashboardItemsListAdapter(requireActivity(),dashbordItemsList)
             rv_dashboard_items.adapter=adapter
+
+            adapter.setOnClickListener(object : DashboardItemsListAdapter.OnclickListener {
+                override fun onClick(position: Int, product: Product) {
+                    val intent = Intent(context, ProductDetailsActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_PRODUCT_ID,product.product_id)
+                    startActivity(intent)
+                }
+            }
+            )
 
         }
         else
