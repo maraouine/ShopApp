@@ -1,10 +1,12 @@
 package com.example.bi3echri.ui.ui.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bi3echri.R
@@ -38,6 +40,48 @@ open class ProductsFragment : BaseFragment() {
         super.onResume()
         getProductsListFromFireStore()
     }
+    fun deleteProduct(productID : String)
+    {
+       showAlertDialogToDeleteProduct(productID)
+    }
+    fun productDeleteSucess()
+    {
+        hideProgressDialog()
+        Toast.makeText(
+            requireActivity(),
+            resources.getString(R.string.product_delete_success_message),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        getProductsListFromFireStore()
+    }
+    private fun showAlertDialogToDeleteProduct(productID: String)
+    {
+        val builder = AlertDialog.Builder(requireActivity())
+        //set title for alerte dialog
+        builder.setTitle(resources.getString(R.string.delete_dialog_title))
+        //set message
+        builder.setTitle(resources.getString(R.string.delete_dialog_message))
+        builder.setIcon(android.R.drawable.ic_dialog_alert)
+
+        //performing positive action
+        builder.setPositiveButton(resources.getString(R.string.yes)){
+            dialogInterface, _ ->
+            showProgressDialog(resources.getString(R.string.please_wait))
+            FirstoreClass().deleteProduct(this,productID)
+            dialogInterface.dismiss()
+        }
+        builder.setNegativeButton(resources.getString(R.string.no)){
+                dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+
+        val alertDialog : AlertDialog = builder.create()
+        // set other dialog
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+
+    }
     fun successProductsListFromFirestore(productsList:ArrayList<Product>)
     {
         hideProgressDialog()
@@ -48,7 +92,7 @@ open class ProductsFragment : BaseFragment() {
 
             rv_my_product_items.layoutManager=LinearLayoutManager(activity)
             rv_my_product_items.setHasFixedSize(true)
-            val adapterProducts=MyProductsListAdapter(requireActivity(),productsList)
+            val adapterProducts=MyProductsListAdapter(requireActivity(),productsList, this)
             rv_my_product_items.adapter=adapterProducts
 
         }

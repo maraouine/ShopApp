@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bi3echri.R
 import com.example.bi3echri.models.Product
+import com.example.bi3echri.ui.ui.fragments.ProductsFragment
 import com.example.bi3echri.utils.GlideLoader
 import kotlinx.android.synthetic.main.item_list_layout.view.*
 
 open class MyProductsListAdapter (
     private val context : Context,
-    private val list: ArrayList<Product>
+    private val list: ArrayList<Product>,
+    private val fragment : ProductsFragment
     ): RecyclerView.Adapter <RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder (
@@ -31,6 +33,12 @@ open class MyProductsListAdapter (
             GlideLoader(context).loadProductPicture(model.image,holder.itemView.iv_item_image)
             holder.itemView.tv_item_name.text=model.title
             holder.itemView.tv_item_price.text="$${model.price}"
+
+            holder.itemView.ib_delete_product.setOnClickListener{
+                fragment.deleteProduct(model.product_id)
+            }
+
+
         }
     }
 

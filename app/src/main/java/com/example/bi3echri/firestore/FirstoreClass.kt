@@ -230,6 +230,24 @@ class FirstoreClass
             }
     }
 
+    fun deleteProduct(fragment : ProductsFragment, productId:String)
+    {
+        mFirestore.collection(Constants.PRODUCTS)
+            .document(productId)
+            .delete()
+            .addOnSuccessListener {
+                fragment.productDeleteSucess()
+            }
+            .addOnFailureListener {
+                e ->
+                fragment.hideProgressDialog()
+                Log.e(
+                    fragment.requireActivity().javaClass.simpleName,
+                    "Error while deleting the product.",
+                    e
+                )
+            }
+    }
     fun getDashBoardItemsList(fragment: DashboardFragment) {
 
         Log.e("Product List", "I'm in the function")

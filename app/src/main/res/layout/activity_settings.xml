@@ -74,7 +74,7 @@
                 android:background="@drawable/user_image_background" />
         </FrameLayout>
 
-        <com.myshoppal.utils.MSPTextView
+        <com.example.bi3echri.utils.MSPTextView
             android:id="@+id/tv_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
             android:textSize="@dimen/settings_name_textSize"
             tools:text="Denis Panjuta" />
 
-        <com.myshoppal.utils.MSPTextView
+        <com.example.bi3echri.utils.MSPTextView
             android:id="@+id/tv_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
             android:textSize="@dimen/settings_info_textSize"
             tools:text="Male" />
 
-        <com.myshoppal.utils.MSPTextView
+        <com.example.bi3echri.utils.MSPTextView
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
             android:textSize="@dimen/settings_info_textSize"
             tools:text="denis.panjuta@gmail.com" />
 
-        <com.myshoppal.utils.MSPTextView
+        <com.example.bi3echri.utils.MSPTextView
             android:id="@+id/tv_mobile_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

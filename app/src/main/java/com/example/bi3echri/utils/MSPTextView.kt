@@ -1,4 +1,5 @@
-package com.myshoppal.utils
+package com.example.bi3echri.utils
+
 
 import android.content.Context
 import android.graphics.Typeface
