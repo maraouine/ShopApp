@@ -5,10 +5,12 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
+import com.example.bi3echri.R
 import com.example.bi3echri.models.Product
 import com.example.bi3echri.models.User
 import com.example.bi3echri.ui.ui.activities.*
 import com.example.bi3echri.ui.ui.fragments.BaseFragment
+import com.example.bi3echri.ui.ui.fragments.DashboardFragment
 import com.example.bi3echri.ui.ui.fragments.OrdersFragment
 import com.example.bi3echri.ui.ui.fragments.ProductsFragment
 import com.example.bi3echri.utils.Constants
@@ -226,5 +228,35 @@ class FirstoreClass
                 }
                 Log.e("Get Product List", "Error while getting product list.", e)
             }
+    }
+
+    fun getDashBoardItemsList(fragment: DashboardFragment) {
+
+        Log.e("Product List", "I'm in the function")
+
+        mFirestore.collection(Constants.PRODUCTS)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e("Product List", document.documents.toString())
+                val productsList: ArrayList<Product> = ArrayList()
+                for (i in document.documents) {
+                    val product = i.toObject(Product::class.java)
+                    product!!.product_id = i.id
+                    productsList.add(product)
+
+                }
+                when (fragment) {
+                    is DashboardFragment -> {
+                        fragment.hideProgressDialog()
+                        fragment.successDashBordItemsList(productsList)
+
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                        // Hide the progress dialog if there is any error based on the base class instance.
+                     fragment.hideProgressDialog()
+                        Log.e(fragment.javaClass.simpleName, "Error while getting dashbord items product list.", e)
+                    }
     }
 }

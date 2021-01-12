@@ -2,13 +2,22 @@ package com.example.bi3echri.ui.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bi3echri.R
+import com.example.bi3echri.firestore.FirstoreClass
+import com.example.bi3echri.models.Product
 import com.example.bi3echri.ui.ui.activities.SettingsActivity
+import com.example.bi3echri.ui.ui.adapters.DashboardItemsListAdapter
+import com.example.bi3echri.ui.ui.adapters.MyProductsListAdapter
+import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.android.synthetic.main.fragment_products.*
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
    // private lateinit var dashboardViewModel: DashboardViewModel
 
@@ -24,12 +33,41 @@ class DashboardFragment : Fragment() {
     ): View? {
       //  dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        textView.text = "This is the dashboard fragment"
-
         return root
     }
+    override fun onResume() {
+        super.onResume()
+        getDashBoardItemList()
+    }
 
+    fun successDashBordItemsList(dashbordItemsList:ArrayList<Product>)
+    {
+        hideProgressDialog()
+        if(dashbordItemsList.size>0)
+        {
+            rv_dashboard_items.visibility=View.VISIBLE
+            tv_no_dashboard_items_found.visibility=View.GONE
+
+            rv_dashboard_items.layoutManager= GridLayoutManager(activity,2)
+            rv_dashboard_items.setHasFixedSize(true)
+
+            val adapter= DashboardItemsListAdapter(requireActivity(),dashbordItemsList)
+            rv_dashboard_items.adapter=adapter
+
+        }
+        else
+        {
+            rv_dashboard_items.visibility=View.GONE
+            tv_no_dashboard_items_found.visibility=View.VISIBLE
+        }
+
+
+    }
+    private fun getDashBoardItemList()
+    {
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirstoreClass().getDashBoardItemsList(this)
+    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.dashboard_menu,menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -46,4 +84,5 @@ class DashboardFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 }
