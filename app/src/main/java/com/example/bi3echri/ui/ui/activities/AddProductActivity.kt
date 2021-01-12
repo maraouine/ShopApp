@@ -115,7 +115,7 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
                     ))
                      mselectedImageFileURI = data.data!!
                     try {
-                        GlideLoader(this).loadUserPicture(mselectedImageFileURI!!,iv_product_image)
+                        GlideLoader(this).loadProductPicture(mselectedImageFileURI!!,iv_product_image)
                     }
                     catch (e : IOException)
                     {

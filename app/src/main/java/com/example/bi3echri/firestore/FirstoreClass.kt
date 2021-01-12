@@ -4,9 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.example.bi3echri.models.Product
 import com.example.bi3echri.models.User
 import com.example.bi3echri.ui.ui.activities.*
+import com.example.bi3echri.ui.ui.fragments.BaseFragment
+import com.example.bi3echri.ui.ui.fragments.OrdersFragment
+import com.example.bi3echri.ui.ui.fragments.ProductsFragment
 import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -188,6 +192,39 @@ class FirstoreClass
                     "Error while uploading the product details",
                     e
                 )
+            }
+    }
+
+    fun getProductList(fragment: Fragment)
+    {
+        mFirestore.collection(Constants.PRODUCTS)
+            .whereEqualTo(Constants.USER_ID,getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e("Product List",document.documents.toString())
+                val productsList : ArrayList <Product> = ArrayList()
+                for (i in document.documents){
+                    val product=i.toObject(Product::class.java)
+                    product!!.product_id=i.id
+                    productsList.add(product)
+                }
+                when (fragment)
+                {
+                    is ProductsFragment ->
+                    {
+                        fragment.successProductsListFromFirestore(productsList)
+                    }
+
+                }
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error based on the base class instance.
+                when (fragment) {
+                    is ProductsFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                }
+                Log.e("Get Product List", "Error while getting product list.", e)
             }
     }
 }

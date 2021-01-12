@@ -27,10 +27,9 @@ object Constants {
     const val COMPLETE_PROFIL: String ="profileCompleted"
 
     const val PRODUCT_IMAGE: String ="Product_Image"
-
-
     const val USER_PROFIL_IMAGE:String="user_profil_image"
 
+    const val USER_ID:String="user_id"
 
     fun showImageChooser(activity: Activity)
     {
