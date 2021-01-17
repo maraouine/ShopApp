@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bi3echri.R
 import com.example.bi3echri.firestore.FirstoreClass
 import com.example.bi3echri.models.Product
+import com.example.bi3echri.ui.ui.activities.CartListActivity
 import com.example.bi3echri.ui.ui.activities.ProductDetailsActivity
 import com.example.bi3echri.ui.ui.activities.SettingsActivity
 import com.example.bi3echri.ui.ui.adapters.DashboardItemsListAdapter
@@ -56,14 +57,14 @@ class DashboardFragment : BaseFragment() {
             val adapter= DashboardItemsListAdapter(requireActivity(),dashbordItemsList)
             rv_dashboard_items.adapter=adapter
 
-            adapter.setOnClickListener(object : DashboardItemsListAdapter.OnclickListener {
+           /* adapter.setOnClickListener(object : DashboardItemsListAdapter.OnclickListener {
                 override fun onClick(position: Int, product: Product) {
                     val intent = Intent(context, ProductDetailsActivity::class.java)
                     intent.putExtra(Constants.EXTRA_PRODUCT_ID,product.product_id)
                     startActivity(intent)
                 }
             }
-            )
+            )*/
 
         }
         else
@@ -90,6 +91,10 @@ class DashboardFragment : BaseFragment() {
         {
             R.id.action_settings -> {
                 startActivity(Intent(activity, SettingsActivity::class.java))
+                return true
+            }
+            R.id.action_cart -> {
+                startActivity(Intent(activity, CartListActivity::class.java))
                 return true
             }
         }

@@ -6,6 +6,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.bi3echri.R
+import com.example.bi3echri.models.CartItem
 import com.example.bi3echri.models.Product
 import com.example.bi3echri.models.User
 import com.example.bi3echri.ui.ui.activities.*
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlin.math.log
+import android.util.Log.e as e1
 
 class FirstoreClass
 {
@@ -36,7 +38,7 @@ class FirstoreClass
             }
             .addOnFailureListener { e ->
                 activity.hideProgressDialog()
-                Log.e(
+                e1(
                     activity.javaClass.simpleName,
                     "Error while registering the user",
                     e
@@ -97,7 +99,7 @@ class FirstoreClass
                         activity.hideProgressDialog()
                     }
                 }
-                Log.e(
+                e1(
                     activity.javaClass.simpleName, "Error while getting user details",
                     e
                 )
@@ -124,7 +126,7 @@ class FirstoreClass
                         activity.hideProgressDialog()
                     }
                 }
-                Log.e(
+                e1(
                     activity.javaClass.simpleName,
                     "Error while updating the user details",
                     e
@@ -141,13 +143,13 @@ class FirstoreClass
                 imageFileURI)
         )
         sRef.putFile(imageFileURI!!).addOnSuccessListener { taskSnapshot ->
-            Log.e(
+            e1(
                 "Firebase image URL",
                 taskSnapshot.metadata!!.reference!!.downloadUrl.toString()
             )
             taskSnapshot.metadata!!.reference!!.downloadUrl
                 .addOnSuccessListener { uri ->
-                    Log.e("DownLoadable Image URL", uri.toString())
+                    e1("DownLoadable Image URL", uri.toString())
                     when (activity)
                     {
                         is UserProfilActivity -> {
@@ -171,7 +173,7 @@ class FirstoreClass
                         activity.hideProgressDialog()
                     }
                 }
-                Log.e(
+                e1(
                     activity.javaClass.simpleName,
                     exception.message,
                     exception
@@ -189,7 +191,7 @@ class FirstoreClass
             .addOnFailureListener{
                 e->
                 activity.hideProgressDialog()
-                Log.e(
+                e1(
                     activity.javaClass.simpleName,
                     "Error while uploading the product details",
                     e
@@ -203,7 +205,7 @@ class FirstoreClass
             .whereEqualTo(Constants.USER_ID,getCurrentUserID())
             .get()
             .addOnSuccessListener { document ->
-                Log.e("Product List",document.documents.toString())
+                e1("Product List",document.documents.toString())
                 val productsList : ArrayList <Product> = ArrayList()
                 for (i in document.documents){
                     val product=i.toObject(Product::class.java)
@@ -226,7 +228,7 @@ class FirstoreClass
                         fragment.hideProgressDialog()
                     }
                 }
-                Log.e("Get Product List", "Error while getting product list.", e)
+                e1("Get Product List", "Error while getting product list.", e)
             }
     }
     fun getProductDetails(activity: ProductDetailsActivity, productID : String)
@@ -236,7 +238,7 @@ class FirstoreClass
             .get()
             .addOnSuccessListener {
                 document ->
-                Log.e(activity.javaClass.simpleName,document.toString())
+                e1(activity.javaClass.simpleName,document.toString())
                 val product= document.toObject(Product::class.java)
                 if (product != null) {
                     activity.productDetailsSuccess(product)
@@ -246,8 +248,27 @@ class FirstoreClass
             .addOnFailureListener {
                 e->
               activity.hideProgressDialog()
-              Log.e(activity.javaClass.simpleName,"Error while getting the product details.",e)
+                e1(activity.javaClass.simpleName,"Error while getting the product details.",e)
             }
+    }
+    fun addCartItems(activity: ProductDetailsActivity, addToCart:CartItem)
+    {
+       mFirestore.collection(Constants.CART_ITEMS)
+           .document()
+           .set(addToCart, SetOptions.merge())
+           .addOnSuccessListener {
+                activity.addToCartSuccess()
+           }
+           .addOnFailureListener{
+               e->
+                   activity.hideProgressDialog()
+                   Log.e(
+                       activity.javaClass.simpleName,
+                       "Error while creating the document item",
+                       e
+                   )
+             
+           }
     }
     fun deleteProduct(fragment : ProductsFragment, productId:String)
     {
@@ -260,21 +281,49 @@ class FirstoreClass
             .addOnFailureListener {
                 e ->
                 fragment.hideProgressDialog()
-                Log.e(
+                e1(
                     fragment.requireActivity().javaClass.simpleName,
                     "Error while deleting the product.",
                     e
                 )
             }
     }
+
+    fun checkIfItemExistInCart(activity: ProductDetailsActivity,productId: String)
+    {
+        mFirestore.collection(Constants.CART_ITEMS)
+            .whereEqualTo(Constants.PRODUCT_ID,productId)
+            .get()
+            .addOnSuccessListener {
+                docuemnt->
+                Log.e(activity.javaClass.simpleName, docuemnt.documents.toString())
+                if(docuemnt.documents.size>0)
+                {
+                    activity.productExistsInCart()
+                }
+                else
+                {
+                    activity.hideProgressDialog()
+                }
+            }
+            .addOnFailureListener{
+                e->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while checking the existing cart list",
+                    e
+                )
+            }
+    }
     fun getDashBoardItemsList(fragment: DashboardFragment) {
 
-        Log.e("Product List", "I'm in the function")
+        e1("Product List", "I'm in the function")
 
         mFirestore.collection(Constants.PRODUCTS)
             .get()
             .addOnSuccessListener { document ->
-                Log.e("Product List", document.documents.toString())
+                e1("Product List", document.documents.toString())
                 val productsList: ArrayList<Product> = ArrayList()
                 for (i in document.documents) {
                     val product = i.toObject(Product::class.java)
@@ -293,7 +342,7 @@ class FirstoreClass
             .addOnFailureListener { e ->
                         // Hide the progress dialog if there is any error based on the base class instance.
                      fragment.hideProgressDialog()
-                        Log.e(fragment.javaClass.simpleName, "Error while getting dashbord items product list.", e)
+                e1(fragment.javaClass.simpleName, "Error while getting dashbord items product list.", e)
                     }
     }
 }
