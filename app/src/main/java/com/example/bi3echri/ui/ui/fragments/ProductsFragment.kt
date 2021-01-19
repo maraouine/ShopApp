@@ -3,17 +3,13 @@ package com.example.bi3echri.ui.ui.fragments
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bi3echri.R
 import com.example.bi3echri.firestore.FirstoreClass
 import com.example.bi3echri.models.Product
 import com.example.bi3echri.ui.ui.activities.AddProductActivity
-import com.example.bi3echri.ui.ui.activities.SettingsActivity
 import com.example.bi3echri.ui.ui.adapters.MyProductsListAdapter
 import kotlinx.android.synthetic.main.fragment_products.*
 

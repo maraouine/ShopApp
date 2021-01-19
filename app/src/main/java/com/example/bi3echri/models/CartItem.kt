@@ -10,8 +10,8 @@ data class CartItem (
     val title:String="",
     val price:String="",
     val image:String="",
-    val cart_qunatity:String="",
-    val stock_quantity:String="",
+    var cart_qunatity:String="",
+    var stock_quantity:String="",
     var id: String=""
         ):Parcelable
 

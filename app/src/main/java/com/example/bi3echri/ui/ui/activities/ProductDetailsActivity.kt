@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.bi3echri.R
 import com.example.bi3echri.firestore.FirstoreClass
 import com.example.bi3echri.models.CartItem
@@ -69,14 +70,31 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         tv_product_details_description.text=product.description
         tv_product_details_available_quantity.text=product.stock_quantity
 
-        if(FirstoreClass().getCurrentUserID()==product.user_id)
+        if(product.stock_quantity.toInt()==0)
         {
             hideProgressDialog()
+            btn_add_to_cart.visibility=View.GONE
+            tv_product_details_available_quantity.text=
+                resources.getString(R.string.lbl_out_of_stock)
+            tv_product_details_available_quantity.setTextColor(
+                ContextCompat.getColor(
+                    this@ProductDetailsActivity,
+                    R.color.colarSnackBarError
+                )
+            )
         }
         else
         {
-            FirstoreClass().checkIfItemExistInCart(this,mProductID)
+            if(FirstoreClass().getCurrentUserID()==product.user_id)
+            {
+                hideProgressDialog()
+            }
+            else
+            {
+                FirstoreClass().checkIfItemExistInCart(this,mProductID)
+            }
         }
+
 
 
     }

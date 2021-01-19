@@ -4,15 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import androidx.fragment.app.Fragment
-import com.example.bi3echri.R
 import com.example.bi3echri.models.CartItem
 import com.example.bi3echri.models.Product
 import com.example.bi3echri.models.User
 import com.example.bi3echri.ui.ui.activities.*
-import com.example.bi3echri.ui.ui.fragments.BaseFragment
 import com.example.bi3echri.ui.ui.fragments.DashboardFragment
-import com.example.bi3echri.ui.ui.fragments.OrdersFragment
 import com.example.bi3echri.ui.ui.fragments.ProductsFragment
 import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlin.math.log
 import android.util.Log.e as e1
 
 class FirstoreClass
@@ -199,7 +194,7 @@ class FirstoreClass
             }
     }
 
-    fun getProductList(fragment: Fragment)
+    fun getProductList(fragment: ProductsFragment)
     {
         mFirestore.collection(Constants.PRODUCTS)
             .whereEqualTo(Constants.USER_ID,getCurrentUserID())
@@ -269,6 +264,33 @@ class FirstoreClass
                    )
              
            }
+    }
+
+    fun removeItemFromCart(context: Context,cart_id:String)
+    {
+        mFirestore.collection(Constants.CART_ITEMS)
+            .document(cart_id)
+            .delete()
+            .addOnSuccessListener {
+                when(context)
+                {
+                    is CartListActivity->
+                    {
+                        context.itemRemovedSucess()
+                    }
+                }
+            }
+            .addOnFailureListener {
+                e->
+                when(context)
+                {
+                    is CartListActivity ->
+                    {
+                        context.hideProgressDialog()
+                    }
+                }
+                Log.e(context.javaClass.simpleName,"Error while removing the item from cart list",e)
+            }
     }
     fun deleteProduct(fragment : ProductsFragment, productId:String)
     {
@@ -349,6 +371,26 @@ class FirstoreClass
                     "Error while checking the existing cart list",
                     e
                 )
+            }
+    }
+    fun getAllProductList(activity: CartListActivity)
+    {
+        mFirestore.collection(Constants.PRODUCTS)
+            .get()
+            .addOnSuccessListener {
+                document->
+                val productsList : ArrayList<Product> = ArrayList()
+                for(i in document.documents)
+                {
+                    val product=i.toObject(Product::class.java)
+                    product!!.product_id=i.id
+                    productsList.add(product)
+                }
+                activity.successProductsListFromFireStore(productsList)
+            }
+            .addOnFailureListener {e->
+                activity.hideProgressDialog()
+                Log.e("Get Product list","Error while gettung all product list.",e)
             }
     }
     fun getDashBoardItemsList(fragment: DashboardFragment) {
