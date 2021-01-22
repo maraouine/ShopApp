@@ -36,7 +36,7 @@ class CartListActivity : BaseActivity() {
                     cartItem.stock_quantity = product.stock_quantity
                     if(product.stock_quantity.toInt()==0)
                     {
-                        cartItem.cart_qunatity=product.stock_quantity
+                        cartItem.cart_quantity=product.stock_quantity
                     }
                 }
             }
@@ -60,7 +60,7 @@ class CartListActivity : BaseActivity() {
                 if(availableQuantity>0)
                 {
                     val price=item.price.toDouble()
-                    val quantity=item.cart_qunatity.toInt()
+                    val quantity=item.cart_quantity.toInt()
                     subTotal+=(price*quantity)
                 }
 
@@ -103,6 +103,11 @@ class CartListActivity : BaseActivity() {
         FirstoreClass().getCartList(this@CartListActivity)
     }
 
+    fun itemUpdateSuccess()
+    {
+        hideProgressDialog()
+        getCartItemsList()
+    }
     override fun onResume() {
         super.onResume()
        // getCartItemsList()

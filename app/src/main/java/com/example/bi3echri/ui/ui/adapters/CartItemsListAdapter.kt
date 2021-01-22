@@ -10,6 +10,7 @@ import com.example.bi3echri.R
 import com.example.bi3echri.firestore.FirstoreClass
 import com.example.bi3echri.models.CartItem
 import com.example.bi3echri.ui.ui.activities.CartListActivity
+import com.example.bi3echri.utils.Constants
 import com.example.bi3echri.utils.GlideLoader
 import kotlinx.android.synthetic.main.item_cart_layout.view.*
 import kotlinx.android.synthetic.main.item_dashboard_layout.view.*
@@ -41,9 +42,9 @@ open class CartItemsListAdapter (
             )
             holder.itemView.tv_cart_item_title.text=model.title
             holder.itemView.tv_cart_item_price.text="$${model.price}"
-            holder.itemView.tv_cart_quantity.text=model.cart_qunatity
+            holder.itemView.tv_cart_quantity.text=model.cart_quantity
 
-            if(model.cart_qunatity=="0")
+            if(model.cart_quantity=="0")
             {
                 holder.itemView.ib_remove_cart_item.visibility=View.GONE
                 holder.itemView.ib_add_cart_item.visibility=View.GONE
@@ -76,6 +77,53 @@ open class CartItemsListAdapter (
                 }
                 FirstoreClass().removeItemFromCart(context,model.id)
             }
+
+            holder.itemView.ib_remove_cart_item.setOnClickListener {
+            if(model.cart_quantity=="1")
+            {
+                FirstoreClass().removeItemFromCart(context,model.id)
+            }
+            else
+            {
+                val cartQuntity:Int=model.cart_quantity.toInt()
+                val itemHashMap=HashMap<String, Any>()
+                itemHashMap[Constants.CART_QUANTITY]=(cartQuntity-1).toString()
+                if(context is CartListActivity)
+                {
+                    context.showProgressDialog(context.resources.getString(R.string.please_wait))
+                }
+                FirstoreClass().updateMyCart(context,model.id,itemHashMap)
+            }
+        }
+            holder.itemView.ib_add_cart_item.setOnClickListener {
+                val cartQuntity:Int=model.cart_quantity.toInt()
+                if(cartQuntity<model.stock_quantity.toInt())
+                {
+                    val itemHashMap=HashMap<String, Any>()
+                    itemHashMap[Constants.CART_QUANTITY]=(cartQuntity+1).toString()
+                    if(context is CartListActivity)
+                    {
+                        context.showProgressDialog(context.resources.getString(R.string.please_wait))
+                    }
+                    FirstoreClass().updateMyCart(context,model.id,itemHashMap)
+                }
+                else
+                {
+                    if(context is CartListActivity)
+                    {
+                        context.showErrorBar(
+                            context.resources.getString(
+                                R.string.msg_for_available_stock,
+                                model.stock_quantity
+                            ),
+                            true
+                        )
+                    }
+
+                }
+
+            }
+
 
         }
 

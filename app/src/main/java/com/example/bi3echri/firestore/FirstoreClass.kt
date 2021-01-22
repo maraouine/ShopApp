@@ -346,6 +346,31 @@ class FirstoreClass
                 Log.e(activity.javaClass.simpleName,"Error while getting the cart list items",e)
             }
     }
+    fun updateMyCart(context: Context,cart_id: String,itemHasMap:HashMap<String,Any>)
+    {
+    mFirestore.collection(Constants.CART_ITEMS)
+        .document(cart_id)
+        .update(itemHasMap)
+        .addOnSuccessListener {
+            when(context)
+            {
+                is CartListActivity->{
+                    context.itemUpdateSuccess()
+                }
+            }
+        }
+        .addOnFailureListener {
+            e->
+            when(context)
+            {
+              is CartListActivity->
+              {
+                  context.hideProgressDialog()
+              }
+            }
+        }
+
+    }
     fun checkIfItemExistInCart(activity: ProductDetailsActivity,productId: String)
     {
         mFirestore.collection(Constants.CART_ITEMS)
