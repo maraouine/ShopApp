@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import com.example.bi3echri.models.CartItem
-import com.example.bi3echri.models.Product
-import com.example.bi3echri.models.User
+import com.example.bi3echri.models.*
 import com.example.bi3echri.ui.ui.activities.*
 import com.example.bi3echri.ui.ui.fragments.DashboardFragment
 import com.example.bi3echri.ui.ui.fragments.ProductsFragment
@@ -332,6 +330,10 @@ class FirstoreClass
                    {
                      activity.successCartItemsList(list)
                    }
+                    is CheckoutActivity ->
+                    {
+                        activity.successCartItemsList(list)
+                    }
                 }
             }
             .addOnFailureListener{
@@ -342,8 +344,110 @@ class FirstoreClass
                     {
                         activity.hideProgressDialog()
                     }
+                    is CheckoutActivity ->
+                    {
+                        activity.hideProgressDialog()
+                    }
                 }
                 Log.e(activity.javaClass.simpleName,"Error while getting the cart list items",e)
+            }
+    }
+    fun getAddressList(activity: AddressListActivity)
+    {
+        mFirestore.collection(Constants.ADDRESSES)
+            .whereEqualTo(Constants.USER_ID,getCurrentUserID())
+            .get()
+            .addOnSuccessListener {
+                document ->
+                Log.e(activity.javaClass.simpleName,document.documents.toString())
+                val addressList : ArrayList<Address> = ArrayList()
+                for ( i in document.documents)
+                {
+                    val address=i.toObject(Address::class.java)!!
+                    address.id=i.id
+                    addressList.add(address)
+                }
+                activity.successAddressListFromFirestore(addressList)
+            }
+            .addOnFailureListener {
+                e->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,"Error while getting the addresses",e)
+
+            }
+    }
+
+    fun placeOrder(activity: CheckoutActivity, order: Order)
+    {
+        mFirestore.collection(Constants.ORDERS)
+            .document()
+            .set(order, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.OrderPlacedSuccess()
+            }
+            .addOnFailureListener {
+                    e->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while placing order",
+                    e
+                )
+            }
+    }
+
+    fun DeletedAddress(activity: AddressListActivity, addressId:String)
+    {
+        mFirestore.collection(Constants.ADDRESSES)
+            .document(addressId)
+            .delete()
+            .addOnSuccessListener {
+                activity.deletedAddressSuccess()
+            }
+            .addOnFailureListener {
+                    e->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while deleting the address",
+                    e
+                )
+            }
+    }
+    fun updatedAddress(activity: AddEditAddressActivity, addressInfo: Address, addressId:String)
+    {
+        mFirestore.collection(Constants.ADDRESSES)
+            .document(addressId)
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.addUpdateAcdressSuccess()
+            }
+            .addOnFailureListener {
+                e->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating the address",
+                    e
+                )
+            }
+    }
+    fun addAddress (activity:AddEditAddressActivity, addressInfo: Address)
+    {
+        mFirestore.collection(Constants.ADDRESSES)
+            .document()
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener {
+               activity.addUpdateAcdressSuccess()
+            }
+            .addOnFailureListener {
+                e->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while adding the address.",
+                    e
+                )
             }
     }
     fun updateMyCart(context: Context,cart_id: String,itemHasMap:HashMap<String,Any>)
@@ -398,7 +502,7 @@ class FirstoreClass
                 )
             }
     }
-    fun getAllProductList(activity: CartListActivity)
+    fun getAllProductList(activity: Activity)
     {
         mFirestore.collection(Constants.PRODUCTS)
             .get()
@@ -411,10 +515,26 @@ class FirstoreClass
                     product!!.product_id=i.id
                     productsList.add(product)
                 }
-                activity.successProductsListFromFireStore(productsList)
+                when (activity)
+                {
+                    is CartListActivity -> {
+                        activity.successProductsListFromFireStore(productsList)
+                    }
+                    is CheckoutActivity ->{
+                        activity.successProductsListFromFireStore(productsList)
+                    }
+                }
             }
             .addOnFailureListener {e->
-                activity.hideProgressDialog()
+                when (activity)
+                {
+                    is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is CheckoutActivity ->{
+                        activity.hideProgressDialog()
+                    }
+                }
                 Log.e("Get Product list","Error while gettung all product list.",e)
             }
     }

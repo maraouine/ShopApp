@@ -125,4 +125,24 @@
     <string name="lbl_home">HOME</string>
     <string name="lbl_office">OFFICE</string>
     <string name="lbl_other">OTHER</string>
+    <string name="err_msg_please_enter_full_name">Please enter a full name</string>
+    <string name="err_msg_please_enter_full_number">Please enter phone number</string>
+    <string name="err_msg_please_enter_address">Please enter address</string>
+    <string name="err_msg_please_zip_code">Please enter the zip code</string>
+    <string name="err_msg_please_enter_zip_code">Please enter the other details</string>
+    <string name="err_your_address_added_successfully">The address was added successfully</string>
+
+    <string name="title_edit_address">Edit address</string>
+    <string name="edit_btn_update">Update</string>
+    <string name="edit_your_address_added_successfully">Your address was updated  successfully</string>
+    <string name="err_your_address_deleted_successfully">Your address was deleded  successfully</string>
+    <string name="title_select_address">SELECT ADDRESS</string>
+    <string name="title_checkout">CHECKOUT</string>
+    <string name="checkout_lbl_product_items">Product Items</string>
+    <string name="checkout_lbl_selected_address">Selected Address</string>
+    <string name="checkout_lbl_items_receipt">Items Receipt</string>
+    <string name="lbl_payment_mode">Payment Mode</string>
+    <string name="lbl_cash_on_delivery">Cash On Delivery</string>
+    <string name="btn_lbl_place_order">PLACE ORDER</string>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.example.bi3echri.ui.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -9,6 +10,7 @@ import com.example.bi3echri.firestore.FirstoreClass
 import com.example.bi3echri.models.CartItem
 import com.example.bi3echri.models.Product
 import com.example.bi3echri.ui.ui.adapters.CartItemsListAdapter
+import com.example.bi3echri.utils.Constants
 import kotlinx.android.synthetic.main.activity_cart_list.*
 import kotlinx.android.synthetic.main.activity_product_details.*
 
@@ -22,6 +24,12 @@ class CartListActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart_list)
         setupActionBar()
+
+        btn_checkout.setOnClickListener {
+            val intent = Intent(this@CartListActivity,AddressListActivity::class.java)
+            intent.putExtra(Constants.EXTRA_SELECT_ADDRESS,true)
+            startActivity(intent)
+        }
     }
 
     fun successCartItemsList(cartList : ArrayList<CartItem>)
@@ -42,7 +50,7 @@ class CartListActivity : BaseActivity() {
             }
         }
         mCartListItems=cartList
-        if(cartList.size>0)
+        if(mCartListItems.size>0)
         {
             rv_cart_items_list.visibility=View.VISIBLE
             ll_checkout.visibility=View.VISIBLE
@@ -50,7 +58,7 @@ class CartListActivity : BaseActivity() {
             rv_cart_items_list.layoutManager=LinearLayoutManager(this@CartListActivity)
             rv_cart_items_list.setHasFixedSize(true)
 
-            val cartListAdapter = CartItemsListAdapter(this@CartListActivity,cartList)
+            val cartListAdapter = CartItemsListAdapter(this@CartListActivity,mCartListItems,true)
             rv_cart_items_list.adapter=cartListAdapter
 
             var subTotal:Double=0.0

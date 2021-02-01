@@ -179,14 +179,15 @@
                     android:layout_height="wrap_content"
                     tools:checked="false" />
 
-                <com.myshoppal.utils.MSPTextView
+                <com.example.bi3echri.utils.MSPTextView
                     android:id="@+id/tv_terms_condition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/txt_terms_condition_marginStart"
                     android:text="@string/i_agree_to_the_terms_and_condition"
                     android:textColor="@color/colorSecondaryText"
-                    android:textSize="@dimen/txt_terms_and_condition_textSize" />
+                    android:textSize="@dimen/txt_terms_and_condition_textSize"
+                    android:layout_marginLeft="0dp" />
             </LinearLayout>
 
             <com.example.bi3echri.utils.MSPButton
@@ -219,7 +220,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_register">
 
-                <com.myshoppal.utils.MSPTextView
+                <com.example.bi3echri.utils.MSPTextView
                     android:id="@+id/tv_already_have_an_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
