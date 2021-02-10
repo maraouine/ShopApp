@@ -10,6 +10,7 @@ object Constants {
     //Collexction in cloud firestore
     const val USERS: String ="users"
     const val PRODUCTS: String ="products"
+    const val SOLD_PRODUCTS: String ="sold_products"
 
     const val BI3ECHRI_PREFERENCES: String ="bi3echriPrefs"
     const val LOGGED_IN_USERNAME:String="logged_in_username"
@@ -52,6 +53,10 @@ object Constants {
     const val EXTRA_SELECTED_ADDRESS :String="extra_selected_address"
 
     const val ORDERS:String="orders"
+    const val STOCK_QUANTITY:String="stock_quantity"
+
+    const val EXTRA_ORDER_DETAILS:String="extra_MY_ORDER_DETAILS"
+    const val EXTRA_SOLD_PRODUCTS_DETAILS:String="extra_sold_products_details"
 
     fun showImageChooser(activity: Activity)
     {

@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.dialog_progress.*
  * create an instance of this fragment.
  */
 open class BaseFragment : Fragment() {
-    // TODO: Rename and change types of parameters
 
     private lateinit var mProgressDialog:Dialog
     override fun onCreate(savedInstanceState: Bundle?) {

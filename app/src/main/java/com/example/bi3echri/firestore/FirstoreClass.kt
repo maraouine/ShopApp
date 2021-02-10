@@ -7,7 +7,9 @@ import android.util.Log
 import com.example.bi3echri.models.*
 import com.example.bi3echri.ui.ui.activities.*
 import com.example.bi3echri.ui.ui.fragments.DashboardFragment
+import com.example.bi3echri.ui.ui.fragments.OrdersFragment
 import com.example.bi3echri.ui.ui.fragments.ProductsFragment
+import com.example.bi3echri.ui.ui.fragments.SoldProductsFragment
 import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -377,6 +379,105 @@ class FirstoreClass
             }
     }
 
+    fun updateAllDetails(activity: CheckoutActivity, cartList:ArrayList<CartItem>, order: Order)
+    {
+        val writeBatch=mFirestore.batch()
+        for(cartItem in cartList)
+        {
+           /* val productHashMap=HashMap<String, Any> ()
+            productHashMap[Constants.STOCK_QUANTITY]=(cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()*/
+
+                val soldProduct=SoldProduct(
+                    cartItem.product_owner_id,
+                    cartItem.title,
+                    cartItem.price,
+                    cartItem.cart_quantity,
+                    cartItem.image,
+                    order.title,
+                    order.order_datetime,
+                    order.sub_total_amount,
+                    order.shipping_charge,
+                    order.total_amount,
+                    order.address
+                )
+            val documentReference=mFirestore.collection(Constants.SOLD_PRODUCTS)
+                .document(cartItem.product_id)
+            writeBatch.set(documentReference,soldProduct)
+        }
+        for (cartItem in cartList)
+        {
+            val documentReference=mFirestore.collection(Constants.CART_ITEMS)
+                .document(cartItem.id)
+                writeBatch.delete(documentReference)
+        }
+
+        writeBatch.commit().addOnSuccessListener {
+            activity.allDetailsUpdatedSuccessfully()
+        }
+            .addOnFailureListener {
+                e->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,"Error while updating all the details adter order placed")
+            }
+    }
+
+    fun getSoldProductList(fragment: SoldProductsFragment)
+    {
+        mFirestore.collection(Constants.SOLD_PRODUCTS)
+
+            .whereEqualTo(Constants.USER_ID,getCurrentUserID())
+            .get()
+            .addOnSuccessListener {
+
+                document->
+                Log.e(fragment.javaClass.simpleName, document.documents.toString())
+                val list:ArrayList<SoldProduct> = ArrayList()
+
+                for(i in document.documents)
+                {
+                    val soldProduct=i.toObject(SoldProduct::class.java)!!
+                    soldProduct.id=i.id
+                    list.add(soldProduct)
+                }
+                fragment.successSoldProductsList(list)
+
+
+            }
+            .addOnFailureListener {
+                e->
+                fragment.hideProgressDialog()
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "Error while getting the list of sold products.",
+                    e
+                )
+            }
+            }
+    fun getMyOrdersList(fragment: OrdersFragment)
+    {
+        mFirestore.collection(Constants.ORDERS)
+            .whereEqualTo(Constants.USER_ID,getCurrentUserID())
+            .get()
+            .addOnSuccessListener {
+                document->
+                e1("Product order",document.documents.toString())
+
+                val list : ArrayList<Order> = ArrayList()
+                for(i in document.documents)
+                {
+                    val orderItem=i.toObject(Order::class.java)
+                    orderItem!!.id=i.id
+                    list.add(orderItem)
+
+                }
+                fragment.populateOrdersListInUI(list)
+            }
+            .addOnFailureListener {
+                e->
+                fragment.hideProgressDialog()
+                Log.e(fragment.javaClass.simpleName,"Error while getting the orders list")
+            }
+    }
     fun placeOrder(activity: CheckoutActivity, order: Order)
     {
         mFirestore.collection(Constants.ORDERS)

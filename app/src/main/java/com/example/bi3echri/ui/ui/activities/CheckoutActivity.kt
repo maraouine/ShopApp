@@ -24,6 +24,10 @@ class CheckoutActivity : BaseActivity() {
     private lateinit var mCartItemsList:ArrayList<CartItem>
     private var mSubTotal:Double=0.0
     private var mTotalAmount:Double=0.0
+    private lateinit var mOrderDetails:Order
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_checkout)
@@ -54,15 +58,20 @@ class CheckoutActivity : BaseActivity() {
 
     fun OrderPlacedSuccess()
     {
+       FirstoreClass().updateAllDetails(this,mCartItemsList,mOrderDetails)
+    }
+    fun allDetailsUpdatedSuccessfully()
+    {
         hideProgressDialog()
         Toast.makeText(this@CheckoutActivity, "The order was placed succefully",
-        Toast.LENGTH_SHORT).show()
+            Toast.LENGTH_SHORT).show()
 
         val intent=Intent(this@CheckoutActivity,DashboardActivity::class.java)
         intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }
+
     fun successProductsListFromFireStore(productsList:ArrayList<Product>)
     {
         mProductsList=productsList
@@ -132,7 +141,7 @@ class CheckoutActivity : BaseActivity() {
         showProgressDialog(resources.getString(R.string.please_wait))
         if(mAddressDetails!=null)
         {
-            val order = Order(
+            mOrderDetails = Order(
                 FirstoreClass().getCurrentUserID(),
                 mCartItemsList,
                 mAddressDetails!!,
@@ -140,9 +149,10 @@ class CheckoutActivity : BaseActivity() {
                 mCartItemsList[0].image, // FIRST ENTRY ON THE CART ITEM LIST
                 mSubTotal.toString(),
                 "10.0", // CREALTE AN ALGO TO CALCULATE SHIPPING FEES
-                mTotalAmount.toString()
+                mTotalAmount.toString(),
+                System.currentTimeMillis()
                 )
-            FirstoreClass().placeOrder(this,order)
+            FirstoreClass().placeOrder(this,mOrderDetails)
         }
 
     }

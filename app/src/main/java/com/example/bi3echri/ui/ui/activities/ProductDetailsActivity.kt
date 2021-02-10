@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.activity_product_details.*
 class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
     private  var mProductID:String=""
     private lateinit var mProductDetails:Product
+    private var prodcutOwnerID : String=""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +30,6 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         if(intent.hasExtra(Constants.EXTRA_PRODUCT_ID)){
             mProductID=intent.getStringExtra(Constants.EXTRA_PRODUCT_ID)!!
         }
-        var prodcutOwnerID : String=""
 
         if(intent.hasExtra(Constants.EXTRA_PRODUCT_OWNER_ID)){
             prodcutOwnerID=intent.getStringExtra(Constants.EXTRA_PRODUCT_OWNER_ID)!!
@@ -112,6 +113,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
     {
         val cartitem=CartItem(
             FirstoreClass().getCurrentUserID(),
+            prodcutOwnerID,
             mProductID,
             mProductDetails.title,
             mProductDetails.price,
