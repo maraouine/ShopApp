@@ -1,17 +1,18 @@
-package com.example.bi3echri.activities
+package com.example.bi3echri.ui.ui.activities
 
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.view.WindowManager
 import com.example.bi3echri.R
+import com.example.bi3echri.firestore.FirstoreClass
+import com.example.bi3echri.models.User
+import com.example.bi3echri.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_login.et_email as et_email1
+import kotlinx.android.synthetic.main.activity_register.et_email as et_email1
 import kotlinx.android.synthetic.main.activity_register.et_password as et_password1
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
@@ -33,12 +34,33 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
 
     }
+    fun userLoggedInSucess (user: User)
+    {
+        //hideprogress dialog
+        hideProgressDialog()
 
+        //main screen after log in
+
+        if(user.profileCompleted==0)
+        {
+            val intent=Intent(this@LoginActivity,
+                UserProfilActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
+            startActivity(intent)
+        }
+        else
+        {
+            startActivity(Intent(this@LoginActivity,
+                DashboardActivity::class.java))
+        }
+
+    }
     override fun onClick(view: View?) {
         if (view != null) {
             when (view.id) {
                 R.id.tv_forgot_password -> {
-
+                    val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.btn_login -> {
                     logInRegisteredUser()
@@ -83,14 +105,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             //Login using Firbase
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener {task ->
-                    //hide the progress Bar
-                    hideProgressDialog()
+
                     if(task.isSuccessful)
                     {
                         //send user to main activity
-                        showErrorBar("You are logged in sucessfully.", false)
+                        FirstoreClass().getUsersDetails(this@LoginActivity)
                     }else
                     {
+                        hideProgressDialog()
                         showErrorBar(task.exception!!.message.toString(),true)
                     }
                 }

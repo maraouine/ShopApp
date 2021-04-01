@@ -1,4 +1,4 @@
-package com.example.bi3echri.activities
+package com.example.bi3echri.ui.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -12,11 +12,6 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // TODO Step 6: Add the below code to make the screen as full screen and finish the activity after 2500 milliseconds.
-        // START
-
-        // This is used to hide the status bar and make the splash screen as a full screen activity.
-        // It is deprecated in the API level 30. I will update you with the alternate solution soon.
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN

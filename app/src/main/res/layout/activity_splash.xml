@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_splash_background"
-    tools:context=".activities.SplashActivity">
+    tools:context=".ui.ui.activities.SplashActivity">
     
     <com.example.bi3echri.utils.MSPTextViewBold
         android:id="@+id/tv_app_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="hello test 1"
         />
 
 

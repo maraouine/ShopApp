@@ -1,22 +1,24 @@
-package com.example.bi3echri.activities
+package com.example.bi3echri.ui.ui.activities
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import com.example.bi3echri.R
+import com.example.bi3echri.utils.Constants
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // TODO Step 1: Hide the status bar for the LoginActivity to make it full screen activity.
-        // START
-        // This is used to hide the status bar and make the login screen as a full screen activity.
-        // It is deprecated in the API level 30. I will update you with the alternate solution soon.
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-        // END
+
+      val sharedPreferences=
+            getSharedPreferences(Constants.BI3ECHRI_PREFERENCES, Context.MODE_PRIVATE)
+        val username=sharedPreferences.getString(Constants.LOGGED_IN_USERNAME,"")!!
     }
 }

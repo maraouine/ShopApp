@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.RegisterActivity">
+    tools:context=".ui.ui.activities.RegisterActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_register_activity"
@@ -25,7 +25,9 @@
             android:paddingEnd="0dp"
             android:text="@string/create_an_account"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/toolbar_title_text_size" />
+            android:textSize="@dimen/toolbar_title_text_size"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -177,14 +179,15 @@
                     android:layout_height="wrap_content"
                     tools:checked="false" />
 
-                <com.myshoppal.utils.MSPTextView
+                <com.example.bi3echri.utils.MSPTextView
                     android:id="@+id/tv_terms_condition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/txt_terms_condition_marginStart"
                     android:text="@string/i_agree_to_the_terms_and_condition"
                     android:textColor="@color/colorSecondaryText"
-                    android:textSize="@dimen/txt_terms_and_condition_textSize" />
+                    android:textSize="@dimen/txt_terms_and_condition_textSize"
+                    android:layout_marginLeft="0dp" />
             </LinearLayout>
 
             <com.example.bi3echri.utils.MSPButton
@@ -217,7 +220,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_register">
 
-                <com.myshoppal.utils.MSPTextView
+                <com.example.bi3echri.utils.MSPTextView
                     android:id="@+id/tv_already_have_an_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
