@@ -164,11 +164,39 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_choose_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_address"
+            android:layout_margin="@dimen/settings_choose_language_margin"
+            android:background="@drawable/item_grey_border_background"
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="@dimen/settings_choose_language_padding">
+
+            <com.example.bi3echri.utils.MSPTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/settings_lbl_choose_language_margin"
+                android:layout_weight="1"
+                android:text="@string/lbl_choose_language"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="@dimen/settings_lbl_choose_language_textSize" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/ic_vector_chevron_right" />
+
+        </LinearLayout>
+
         <com.example.bi3echri.utils.MSPButton
             android:id="@+id/btn_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ll_address"
+            android:layout_below="@id/ll_choose_language"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/settings_button_marginStartEnd"
             android:layout_marginTop="@dimen/settings_button_marginTopBottom"
@@ -183,6 +211,6 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/btn_textSize" />
 
+
     </RelativeLayout>
 </ScrollView>
-    <!--END-->

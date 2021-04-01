@@ -1,6 +1,7 @@
 package com.example.bi3echri.ui.ui.activities
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
@@ -21,6 +22,11 @@ class DashboardActivity : BaseActivity() {
                 R.drawable.app_gradient_color_background
             )
         )
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)

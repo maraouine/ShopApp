@@ -12,11 +12,6 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // TODO Step 6: Add the below code to make the screen as full screen and finish the activity after 2500 milliseconds.
-        // START
-
-        // This is used to hide the status bar and make the splash screen as a full screen activity.
-        // It is deprecated in the API level 30. I will update you with the alternate solution soon.
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -27,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed(
             {
                 // Launch the Main Activity
-                startActivity(Intent(this@SplashActivity, DashboardActivity::class.java))
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 finish() // Call this when your activity is done and should be closed.
             },
             2500
